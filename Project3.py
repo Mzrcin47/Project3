@@ -11,22 +11,21 @@ original_image = cv2.resize(original_image, (800, 600))
 
 gray_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
 
-# Adjusted thresholding
 _, thresholded_image = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-# Dilate the image
 dilated_image = cv2.dilate(thresholded_image, None, iterations=2)
 
-# Find contours again
+# Find contours
 contours, _ = cv2.findContours(dilated_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-min_contour_area = 500
+min_contour_area = 5000
 filtered_contours = [cnt for cnt in contours if cv2.contourArea(cnt) > min_contour_area]
 
 mask = np.zeros_like(gray_image, dtype=np.uint8)
+cv2.fillPoly(mask, filtered_contours, 255)
 
-# Draw all filtered contours on the mask
-cv2.drawContours(mask, filtered_contours, -1, (255), thickness=cv2.FILLED)
+kernel = np.ones((25, 25), np.uint8)
+mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
 
 original_image = original_image.astype(np.uint8)
 mask = mask.astype(np.uint8)

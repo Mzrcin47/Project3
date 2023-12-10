@@ -21,7 +21,7 @@ harris_corners[harris_response > 0.01 * harris_response.max()] = 255
 harris_corners = np.uint8(harris_corners)
 
 
-dilated_corners = cv2.dilate(harris_corners, None, iterations=2)
+dilated_corners = cv2.dilate(harris_corners, None, iterations=7)
 
 contours, _ = cv2.findContours(dilated_corners, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 

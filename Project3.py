@@ -11,7 +11,7 @@ original_image = cv2.resize(original_image, (800, 600))
 gray_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
 
 
-harris_response = cv2.cornerHarris(gray_image, blockSize=2, ksize=3, k=0.04)
+harris_response = cv2.cornerHarris(gray_image, blockSize=2, ksize=1, k=0.04)
 harris_response = cv2.dilate(harris_response, None)
 
 harris_corners = np.zeros_like(harris_response)
